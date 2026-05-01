@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>日语高级语法记忆卡片</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="immersiveExitBar" class="immersive-exit-bar hidden" aria-hidden="true">
+    <button type="button" id="immersiveExitBtn" class="ghost">退出沉浸式</button>
+    <span class="immersive-hint">Esc 退出全屏</span>
+  </div>
+  <header class="hero">
+    <div>
+      <p class="eyebrow">N1N2 Grammar Sprint</p>
+      <h1>日语高级语法记忆卡片</h1>
+      <p class="subtitle">卡片记忆负责快速输入，卡片测试负责语法选择题；课后练习可在浏览器内作答并对答案。进度会自动保存在当前浏览器。</p>
+    </div>
+  </header>
+
+  <main>
+    <section class="stats-grid" id="stats"></section>
+
+    <section class="controls panel">
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-mode="memory">卡片记忆</button>
+        <button class="tab" data-mode="test">卡片测试</button>
+        <button class="tab" data-mode="practice">课后练习</button>
+      </div>
+      <div class="filters">
+        <label>章节
+          <select id="chapterFilter"></select>
+        </label>
+        <label>状态
+          <select id="statusFilter">
+            <option value="all">全部</option>
+            <option value="new">未完成</option>
+            <option value="weak">不熟悉</option>
+            <option value="mastered">已掌握</option>
+          </select>
+        </label>
+        <label>考级（参考 JLPT）
+          <select id="examLevelFilter">
+            <option value="all">N1+N2</option>
+            <option value="N1">仅 N1</option>
+            <option value="N2">仅 N2</option>
+          </select>
+        </label>
+        <label class="search">搜索（记忆）
+          <input id="searchInput" type="search" placeholder="词条、日文意思（意味）" />
+        </label>
+        <button id="shuffleBtn" class="ghost">随机抽卡</button>
+        <button id="resetBtn" class="danger">重置进度</button>
+      </div>
+    </section>
+
+    <section id="memoryView" class="panel mode-view">
+      <div class="toolbar">
+        <button id="prevBtn">上一张</button>
+        <span id="position"></span>
+        <select id="memoryIndexSelect" aria-label="章节和语法快速索引"></select>
+        <button id="nextBtn">下一张</button>
+        <button type="button" class="ghost immersive-toggle" title="全屏沉浸式学习（Esc 退出）">沉浸式</button>
+      </div>
+      <article class="card" id="card"></article>
+    </section>
+
+    <section id="testView" class="panel mode-view hidden">
+      <div class="test-header">
+        <div>
+          <h2>卡片测试</h2>
+          <p class="prompt">按章节、状态、考级筛选出题（不含搜索框）。答对自动计入“已掌握”，答错自动计入“不熟悉”。</p>
+        </div>
+        <div class="test-controls">
+          <label>题量
+            <select id="testCount">
+              <option value="10">10 题</option>
+              <option value="20">20 题</option>
+              <option value="30">30 题</option>
+              <option value="all">全部</option>
+            </select>
+          </label>
+          <label>题型
+            <select id="testType">
+              <option value="title-to-meaning">看语法选中文意思</option>
+              <option value="title-to-japanese-meaning">看语法选日文意思</option>
+              <option value="meaning-to-title">看中文意思选语法</option>
+              <option value="honorific-plain-to-keigo">敬语专项：看原型选敬语</option>
+              <option value="honorific-keigo-to-plain">敬语专项：看敬语选原型</option>
+            </select>
+          </label>
+          <button id="startTestBtn" class="primary">开始测试</button>
+          <button type="button" class="ghost immersive-toggle" title="全屏沉浸式测试（Esc 退出）">沉浸式</button>
+        </div>
+      </div>
+      <div id="testArea" class="test-area"></div>
+    </section>
+
+    <section id="practiceView" class="panel mode-view hidden">
+      <div class="practice-header">
+        <div>
+          <h2>课后练习</h2>
+          <p class="prompt">课后练习正文仅展示题目；まとめ为选择题作答。</p>
+        </div>
+        <div class="practice-controls">
+          <label>章节
+            <select id="practiceBundleSelect"></select>
+          </label>
+          <label id="practiceTypeLabel">类型
+            <select id="practiceTypeSelect">
+              <option value="practice">课后练习</option>
+              <option value="summary">まとめの問題</option>
+            </select>
+          </label>
+          <label id="practiceSetLabel">题组
+            <select id="practiceSetSelect"></select>
+          </label>
+          <button id="startPracticeBtn" class="primary">开始本题组</button>
+        </div>
+      </div>
+      <div id="practiceArea" class="practice-area"></div>
+    </section>
+  </main>
+
+  <script src="cards-data.js"></script>
+  <script src="practice-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
