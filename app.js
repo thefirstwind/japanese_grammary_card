@@ -1121,7 +1121,7 @@ function initFilters() {
   $("chapterFilter").innerHTML = `<option value="all">全部章节</option>` + chapters.map(([no, title]) => `<option value="${no}">${escapeHtml(title)}</option>`).join("");
 }
 
-/** 记忆模式：触屏左右滑与键盘方向键一致（左滑上一张，右滑下一张）；需水平位移占优，以免抢纵向滚动 */
+/** 记忆模式：触屏按「翻书」习惯（左滑看下一张，右滑看上一张）；需水平位移占优，以免抢纵向滚动 */
 const MEMORY_SWIPE_MIN_PX = 56;
 
 function bindMemoryViewSwipe() {
@@ -1154,8 +1154,8 @@ function bindMemoryViewSwipe() {
     if (mode !== "memory") return;
     if (Math.abs(dx) < MEMORY_SWIPE_MIN_PX) return;
     if (Math.abs(dx) <= Math.abs(dy)) return;
-    if (dx < 0) $("prevBtn")?.click();
-    else $("nextBtn")?.click();
+    if (dx < 0) $("nextBtn")?.click();
+    else $("prevBtn")?.click();
   }
 
   root.addEventListener("touchend", endSwipeTrack, { passive: true });
