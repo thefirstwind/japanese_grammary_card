@@ -1121,6 +1121,49 @@ function initFilters() {
   $("chapterFilter").innerHTML = `<option value="all">全部章节</option>` + chapters.map(([no, title]) => `<option value="${no}">${escapeHtml(title)}</option>`).join("");
 }
 
+/** 记忆模式：触屏左右滑与键盘方向键一致（左滑上一张，右滑下一张）；需水平位移占优，以免抢纵向滚动 */
+const MEMORY_SWIPE_MIN_PX = 56;
+
+function bindMemoryViewSwipe() {
+  const root = $("memoryView");
+  if (!root) return;
+  let track = null;
+
+  root.addEventListener(
+    "touchstart",
+    (e) => {
+      if (mode !== "memory") return;
+      const t = e.touches[0];
+      if (!t) return;
+      if (e.target.closest?.("button, a, input, textarea, select, label, [contenteditable=true]")) return;
+      track = { id: t.identifier, x0: t.clientX, y0: t.clientY };
+    },
+    { passive: true },
+  );
+
+  function endSwipeTrack(e) {
+    if (!track) return;
+    const t = [...e.changedTouches].find((x) => x.identifier === track.id);
+    if (!t) {
+      track = null;
+      return;
+    }
+    const dx = t.clientX - track.x0;
+    const dy = t.clientY - track.y0;
+    track = null;
+    if (mode !== "memory") return;
+    if (Math.abs(dx) < MEMORY_SWIPE_MIN_PX) return;
+    if (Math.abs(dx) <= Math.abs(dy)) return;
+    if (dx < 0) $("prevBtn")?.click();
+    else $("nextBtn")?.click();
+  }
+
+  root.addEventListener("touchend", endSwipeTrack, { passive: true });
+  root.addEventListener("touchcancel", () => {
+    track = null;
+  }, { passive: true });
+}
+
 function bindEvents() {
   document.querySelectorAll(".tab").forEach(btn => {
     btn.onclick = () => {
@@ -1202,6 +1245,8 @@ function bindEvents() {
       $("nextBtn")?.click();
     }
   });
+
+  bindMemoryViewSwipe();
 }
 
 initFilters();
